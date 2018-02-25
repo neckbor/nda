@@ -9,14 +9,10 @@ namespace nda_att
     public class SameElementsDelete
     {
         private int[] _data;
-        private string result;
         public SameElementsDelete(string input)
         {
             _data = StrToArray<int>(input);
         }
-
-        private void RefreshData()
-        { }
 
         // Функция конвертирует строку в массив элементов T
         // (при невозможности конвертации происходит ошибка)
@@ -52,11 +48,35 @@ namespace nda_att
 
         private void Remove(int ind)
         {
-            for (; ind < _data.Length; ind++)
-                if (ind != _data.Length - 1)
+            for (; ind < _data.Length - 1; ind++)
                     _data[ind] = _data[ind + 1];
+
+            _data = RefreshData();
+        }
+        //Перезапись массива
+        public int[] RefreshData()
+        {
+            int[] newData = new int[_data.Length - 1];
+
+            for (int i = 0; i < newData.Length; i++)
+                newData[i] = _data[i];
+
+            SameItemsDetect();
+
+            return newData;
+        }
+        //Печать массива
+        public string PrintData()
+        {
+            string result = "";
+
+            for (int i = 0; i < _data.Length; i++)
+                if (i != _data.Length - 1)
+                    result += _data[i].ToString() + ", ";
                 else
-                    _data[ind] = ;
+                    result += _data[i].ToString();
+
+            return result;
         }
 
     }

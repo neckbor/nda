@@ -59,6 +59,7 @@
             this.runBtn.TabIndex = 2;
             this.runBtn.Text = "Убрать повторяющиеся элементы";
             this.runBtn.UseVisualStyleBackColor = true;
+            this.runBtn.Click += new System.EventHandler(this.runBtn_Click);
             // 
             // label2
             // 

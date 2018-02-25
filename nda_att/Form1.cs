@@ -16,5 +16,14 @@ namespace nda_att
         {
             InitializeComponent();
         }
+
+        private void runBtn_Click(object sender, EventArgs e)
+        {
+            SameElementsDelete mas = new SameElementsDelete(inputText.Text);
+
+            mas.SameItemsDetect();
+
+            resultText.Text = mas.PrintData();
+        }
     }
 }
