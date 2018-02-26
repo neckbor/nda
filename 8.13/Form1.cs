@@ -16,7 +16,33 @@ namespace _8._13
         {
             InitializeComponent();
             mtxGrid.BackgroundColor = Color.Chocolate;
-            mtxGrid
+        }
+
+        private void runBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                double[,] mtx = new double[mtxGrid.RowCount, mtxGrid.ColumnCount];
+
+                for (int r = 0; r < mtx.GetLength(0); r++)
+                    for (int c = 0; c < mtx.GetLength(1); c++)
+                        mtx[r, c] = double.Parse(mtxGrid[r, c].ToString());
+
+                Matrix obj = new Matrix(mtx);
+
+                if (obj.IsDataSquare())
+                {
+                    sumMainlbl.Text = obj.GetMainSum();
+                    resultDownlbl.Text = obj.GetDownSum();
+                }
+                else
+                    MessageBox.Show("Матрица не является квадратной");
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.ToString());
+            }
+
         }
     }
 }
