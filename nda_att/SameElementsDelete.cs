@@ -35,15 +35,20 @@ namespace nda_att
         public void SameItemsDetect()
         {
             for (int i = 0; i < _data.Length; i++)
-                IfSame(i);
+                while(IfSame(i))
+                { }
         }
 
         //Удаление одинаковых элементов с данным
-        private void IfSame(int i)
+        private bool IfSame(int i)
         {
             for (int ind = i + 1; ind < _data.Length; ind++)
                 if (_data[ind] == _data[i])
+                {
                     Remove(ind);
+                    return true;
+                }
+            return false;
         }
 
         private void Remove(int ind)
@@ -61,7 +66,7 @@ namespace nda_att
             for (int i = 0; i < newData.Length; i++)
                 newData[i] = _data[i];
 
-            SameItemsDetect();
+            //SameItemsDetect();
 
             return newData;
         }
