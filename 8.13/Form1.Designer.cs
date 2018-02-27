@@ -40,15 +40,15 @@
             // mtxGrid
             // 
             this.mtxGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.mtxGrid.Location = new System.Drawing.Point(13, 13);
+            this.mtxGrid.Location = new System.Drawing.Point(12, 12);
             this.mtxGrid.Name = "mtxGrid";
             this.mtxGrid.RowTemplate.Height = 24;
-            this.mtxGrid.Size = new System.Drawing.Size(240, 150);
+            this.mtxGrid.Size = new System.Drawing.Size(330, 263);
             this.mtxGrid.TabIndex = 0;
             // 
             // runBtn
             // 
-            this.runBtn.Location = new System.Drawing.Point(294, 65);
+            this.runBtn.Location = new System.Drawing.Point(348, 67);
             this.runBtn.Name = "runBtn";
             this.runBtn.Size = new System.Drawing.Size(152, 58);
             this.runBtn.TabIndex = 1;
@@ -59,7 +59,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 193);
+            this.label1.Location = new System.Drawing.Point(9, 297);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(183, 17);
             this.label1.TabIndex = 2;
@@ -68,7 +68,7 @@
             // sumMainlbl
             // 
             this.sumMainlbl.AutoSize = true;
-            this.sumMainlbl.Location = new System.Drawing.Point(203, 193);
+            this.sumMainlbl.Location = new System.Drawing.Point(192, 297);
             this.sumMainlbl.Name = "sumMainlbl";
             this.sumMainlbl.Size = new System.Drawing.Size(0, 17);
             this.sumMainlbl.TabIndex = 3;
@@ -76,7 +76,7 @@
             // lbl2
             // 
             this.lbl2.AutoSize = true;
-            this.lbl2.Location = new System.Drawing.Point(210, 193);
+            this.lbl2.Location = new System.Drawing.Point(284, 297);
             this.lbl2.Name = "lbl2";
             this.lbl2.Size = new System.Drawing.Size(195, 17);
             this.lbl2.TabIndex = 4;
@@ -85,7 +85,7 @@
             // resultDownlbl
             // 
             this.resultDownlbl.AutoSize = true;
-            this.resultDownlbl.Location = new System.Drawing.Point(412, 193);
+            this.resultDownlbl.Location = new System.Drawing.Point(479, 297);
             this.resultDownlbl.Name = "resultDownlbl";
             this.resultDownlbl.Size = new System.Drawing.Size(0, 17);
             this.resultDownlbl.TabIndex = 5;
@@ -94,7 +94,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(475, 247);
+            this.ClientSize = new System.Drawing.Size(512, 323);
             this.Controls.Add(this.resultDownlbl);
             this.Controls.Add(this.lbl2);
             this.Controls.Add(this.sumMainlbl);

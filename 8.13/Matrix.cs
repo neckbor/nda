@@ -39,7 +39,7 @@ namespace _8._13
 
             for (int r = 0; r < _data.GetLength(0); r++)
                 for (int c = 0; c < _data.GetLength(1); c++)
-                    if(r == _data.GetLength(1) - c)
+                    if(r == _data.GetLength(1) - 1 - c)
                         sum += _data[r, c];
 
             return sum.ToString();
