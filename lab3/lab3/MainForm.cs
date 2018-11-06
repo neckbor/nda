@@ -62,68 +62,12 @@ namespace lab3
             return p;
         }
 
+        private void CalculateEquation(Point p1, Point p2)
+        {
+            float a = (float)(p2.Y - p1.Y) / (float)(p2.X - p1.X);
+        }
+
         //алгоритм для рисования прямых
-        private void DrawLineDDA(Point start, Point end)
-        {
-            double L = Math.Max(Math.Abs(end.X - start.X), Math.Abs(end.Y - start.Y));
-            int dx = (int)Math.Round((end.X - start.X) / L, MidpointRounding.AwayFromZero);
-            int dy = (int)Math.Round((end.Y - start.Y) / L, MidpointRounding.AwayFromZero);
-            int x = start.X;
-            int y = start.Y;
-
-            for (int i = 0; i <= L; i++)
-            {
-                x += dx;
-                y += dy;
-
-                bitmap.SetPixel(x, y, Color.Black);
-                
-            }
-        }
-
-        private void Bresenham(Point start, Point end)
-        {
-            //int x = start.X;
-            //int y = start.Y;
-            //int Dx = end.X - start.X;
-            //int Dy = end.Y - start.Y;
-            //int e = 2 * Dy - Dx;
-            //for (int i = 1; i <= Dx; i++)
-            //{
-            //    bitmap.SetPixel(x, y, Color.Black);
-            //    if (e >= 0)
-            //    {
-            //        y++;
-            //        e += -2 * Dx + 2 * Dy;
-            //    }
-            //    else
-            //        e += 2 * Dy;
-            //    x++;
-            //}
-
-            int dx = Math.Abs(end.X - start.X);
-            int dy = Math.Abs(end.Y - start.Y);
-            int e = 0;
-            int de = dy;
-            int y = start.Y;
-            int diry = end.Y - start.Y;
-
-            if (diry > 0)
-                diry = 1;
-            if (diry < 0)
-                diry = -1;
-            for(int x = Math.Min(start.X, end.X); x <= Math.Max(start.X, end.X); x++)
-            {
-                bitmap.SetPixel(x, y, Color.Black);
-                e += de;
-                if (2 * e >= dx)
-                {
-                    y += dy;
-                    e -= de;
-                }
-            }
-        }
-
         private void DrawLineHabr(Point start, Point end)
         {
             bool flag = false;
