@@ -12,8 +12,8 @@ namespace lab3
         private int _n;
         private double _angle;
         private double _rCircle;
-        private int _rRec = 100;
-        private Point _centr = new Point(200, 200);
+        private int _rRec = 150;
+        private Point _centr = new Point(200, 190);
         private Bitmap _bitmap;
 
         /// <summary>
