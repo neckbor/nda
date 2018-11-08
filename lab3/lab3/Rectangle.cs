@@ -12,6 +12,7 @@ namespace lab3
         private int _n;
         private double _angle;
         private double _rCircle;
+        private double _length;
         private int _rRec = 150;
         private Point _centr = new Point(200, 190);
         private Bitmap _bitmap;
@@ -22,7 +23,7 @@ namespace lab3
         /// <param name="n">Количество углов</param>
         /// <param name="r">Радиус скругления</param>
         /// <param name="bitmap">Битмап, куда рисовать</param>
-        public Rectangle(int n, double r,  Bitmap bitmap)
+        public Rectangle(int n, double r, Bitmap bitmap)
         {
             _n = n;
             _rCircle = r;
@@ -50,16 +51,96 @@ namespace lab3
             Point p1 = GetVertwex(0);
             Point p2;
 
+            _length = CalculateLength(GetVertwex(0), GetVertwex(1));
+
+            if (_length == -1)
+                throw new Exception("Невозможно скруглить");
+
             for (int i = 1; i <= _n; i++)
             {
                 p2 = GetVertwex(i);
 
                 DrawLine(p1, p2);
-
+                
                 p1 = p2;
             }
 
             return _bitmap;
+        }
+
+        /// <summary>
+        /// Оределяет точки, до которых рисовать прямую р1->р2
+        /// От конца прямой рисует дугу и определяет точку, откуда рисовать прямую р2->р3
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2">Цетральная точка</param>
+        /// <param name="p3"></param>
+        private double CalculateLength(Point p1, Point p2)
+        {
+            Point centr = _centr;
+            bool flag = false;
+
+            if (Math.Abs(p2.X - centr.X) < Math.Abs(p2.Y - centr.Y))
+            {
+                Interpolate(ref p2);
+                Interpolate(ref centr);
+                flag = true;
+            }
+
+            if (p2.X > centr.X)
+            {
+                Swap(ref p2, ref centr);
+            }
+
+            float aC = (float)(p2.Y - centr.Y) / (float)(p2.X - centr.X);
+            double yC = centr.Y;
+            double length;
+            //if (flag)
+            //{
+            //    Interpolate(ref centr);
+            //    Interpolate(ref p2);
+            //}
+
+            for (int x = p2.X; x <= centr.X; x++)
+            {
+                int yy = (int)Math.Round(yC, MidpointRounding.AwayFromZero);
+
+                //if (centr == _centr)
+                //    if (flag)
+                //        length = CalculateLengthFromMiddlePoint(yy, x, p2);
+                //    else
+                //        length = CalculateLengthFromMiddlePoint(x, yy, p2);
+                //else
+                //    if (flag)
+                //        length = CalculateLengthFromMiddlePoint(yy, x, centr);
+                //    else
+                //        length = CalculateLengthFromMiddlePoint(x, yy, centr);
+
+                if (centr == _centr)
+                    length = CalculateLengthFromMiddlePoint(x, yy, p2);
+                else
+                    length = CalculateLengthFromMiddlePoint(x, yy, centr);
+
+                if (length != -1)
+                    return length;
+                
+                yC += aC;
+            }
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Находим точку, откуда пойдёт полуокружность и высчитывает расстояние, которое надо отступить по прямой
+        /// </summary>
+        private double CalculateLengthFromMiddlePoint(int x, int y, Point p)
+        {
+            double hip = Math.Sqrt(Math.Pow(x - p.X, 2) + Math.Pow(y - p.Y, 2));
+
+            if (Math.Abs(Math.Sin(_angle / 2) - _rCircle / hip) < Math.Pow(10, -1))
+                return Math.Sqrt(Math.Pow(hip, 2) - Math.Pow(_rCircle, 2));
+            else
+                return -1;
         }
 
         /// <summary>
@@ -90,7 +171,8 @@ namespace lab3
             bool flag = false;
             if (Math.Abs(start.X - end.X) < Math.Abs(start.Y - end.Y))
             {
-                Interpolate(ref start, ref end);
+                Interpolate(ref start);
+                Interpolate(ref end);
                 flag = true;
             }
 
@@ -128,16 +210,11 @@ namespace lab3
         }
 
         //Поменять х и у
-        private void Interpolate(ref Point start, ref Point end)
+        private void Interpolate(ref Point p)
         {
-            int a = start.X;
-            start.X = start.Y;
-            start.Y = a;
-
-            a = end.X;
-            end.X = end.Y;
-            end.Y = a;
+            int a = p.X;
+            p.X = p.Y;
+            p.Y = a;
         }
-
     }
 }

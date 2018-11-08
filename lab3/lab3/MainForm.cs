@@ -12,7 +12,6 @@ namespace lab3
 {
     public partial class MainForm : Form
     {
-        Graphics g;
         Bitmap bitmap;
 
         public MainForm()
