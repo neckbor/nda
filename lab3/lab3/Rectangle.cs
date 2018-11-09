@@ -202,7 +202,38 @@ namespace lab3
 
         private void DrawArc(Point p1, Point p2)
         {
+            
+        }
 
+        private void DrawCircle(Point centr)
+        {
+            // R - радиус, X1, Y1 - координаты центра
+            int x = 0;
+            int y = (int)Math.Round(_rCircle, MidpointRounding.AwayFromZero);
+            int delta = 1 - 2 * (int)Math.Round(_rCircle, MidpointRounding.AwayFromZero);
+            int error = 0;
+            while (y >= 0)
+            {
+                _bitmap.SetPixel(centr.X + x, centr.Y + y, Color.Black);
+                _bitmap.SetPixel(centr.X + x, centr.Y - y, Color.Black);
+                _bitmap.SetPixel(centr.X - x, centr.Y + y, Color.Black);
+                _bitmap.SetPixel(centr.X - x, centr.Y - y, Color.Black);
+
+                error = 2 * (delta + y) - 1;
+
+                if ((delta < 0) && (error <= 0))
+                {
+                    delta += 2 * ++x + 1;
+                    continue;
+                }
+
+                if ((delta > 0) && (error > 0))
+                {
+                    delta -= 2 * --y + 1;
+                    continue;
+                }
+                delta += 2 * (++x - y--);
+            }
         }
 
         //Отнимает от вершины расстояние _length в сторону другой вершины
@@ -220,7 +251,7 @@ namespace lab3
 
                     double vec = Math.Sqrt(Math.Pow(x - p1.X, 2) + Math.Pow(y - p1.Y, 2));
 
-                    if ((int)Math.Round(vec, MidpointRounding.AwayFromZero) == _length)
+                    if ((int)Math.Round(vec, MidpointRounding.ToEven) == _length)
                     {
                         p1 = new Point(x, yy);
                         return;
