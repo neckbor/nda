@@ -12,7 +12,7 @@ namespace lab3
         private int _n;
         private double _angle;
         private double _rCircle;
-        private double _length;
+        private int _length;
         private int _rRec = 150;
         private Point _centr = new Point(200, 190);
         private Bitmap _bitmap;
@@ -51,15 +51,15 @@ namespace lab3
             Point p1 = GetVertwex(0);
             Point p2;
 
-            _length = CalculateLength(GetVertwex(0), GetVertwex(1));
+            double length = CalculateLength(GetVertwex(0), GetVertwex(1));
 
-            if (_length == -1)
-                throw new Exception("Невозможно скруглить");
+            _length = (int)Math.Round(length, MidpointRounding.AwayFromZero);
 
             for (int i = 1; i <= _n; i++)
             {
                 p2 = GetVertwex(i);
 
+                double d = Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
                 DrawLine(p1, p2);
                 
                 p1 = p2;
@@ -184,6 +184,9 @@ namespace lab3
             float a = (float)(end.Y - start.Y) / (float)(end.X - start.X);
             double y = start.Y;
 
+            GetNewPoint(a, ref start, end);
+            GetNewPoint(a, ref end, start);
+
             for (int x = start.X; x <= end.X; x++)
             {
                 int yy = (int)Math.Round(y, MidpointRounding.AwayFromZero);
@@ -195,6 +198,53 @@ namespace lab3
 
                 y += a;
             }
+        }
+
+        private void DrawArc(Point p1, Point p2)
+        {
+
+        }
+
+        //Отнимает от вершины расстояние _length в сторону другой вершины
+        private void GetNewPoint(float a, ref Point p1, Point p2)
+        {
+            if (_length == -1)
+                return;
+
+            double y = p1.Y;
+
+            if(p1.X < p2.X)
+                for(int x = p1.X; x <= p2.X; x++)
+                {
+                    int yy = (int)Math.Round(y, MidpointRounding.AwayFromZero);
+
+                    double vec = Math.Sqrt(Math.Pow(x - p1.X, 2) + Math.Pow(y - p1.Y, 2));
+
+                    if ((int)Math.Round(vec, MidpointRounding.AwayFromZero) == _length)
+                    {
+                        p1 = new Point(x, yy);
+                        return;
+                    }
+
+                    y += a;
+                }
+            else
+                for (int x = p1.X; x >= p2.X; x--)
+                {
+                    int yy = (int)Math.Round(y, MidpointRounding.AwayFromZero);
+
+                    double vec = Math.Sqrt(Math.Pow(x - p1.X, 2) + Math.Pow(y - p1.Y, 2));
+
+                    if ((int)Math.Round(vec, MidpointRounding.AwayFromZero) == _length)
+                    {
+                        p1 = new Point(x, yy);
+                        return;
+                    }
+
+                    y -= a;
+                }
+
+            throw new Exception("Ошибка при высчитывании новой точки");
         }
 
         //Поменять начало и конец
