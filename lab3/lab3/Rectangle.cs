@@ -59,7 +59,7 @@ namespace lab3
             {
                 p2 = GetVertwex(i);
 
-                double d = Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
+                //double d = Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
                 DrawLine(p1, p2);
                 
                 p1 = p2;
