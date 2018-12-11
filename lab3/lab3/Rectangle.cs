@@ -50,97 +50,33 @@ namespace lab3
         {
             Point p1 = GetVertwex(0);
             Point p2;
+            Point p3;
 
-            double length = CalculateLength(GetVertwex(0), GetVertwex(1));
+            double length = GetLength();
 
             _length = (int)Math.Round(length, MidpointRounding.AwayFromZero);
 
             for (int i = 1; i <= _n; i++)
             {
                 p2 = GetVertwex(i);
+                p3 = GetVertwex(i + 1);
 
-                //double d = Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
-                DrawLine(p1, p2);
-                
+                if (_length != 0)
+                    DrawArc(p1, i, p3);
+                else
+                    DrawLine(p1, p2);
+
                 p1 = p2;
+                p2 = p3;
             }
 
             return _bitmap;
         }
-
-        /// <summary>
-        /// Оределяет точки, до которых рисовать прямую р1->р2
-        /// От конца прямой рисует дугу и определяет точку, откуда рисовать прямую р2->р3
-        /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2">Цетральная точка</param>
-        /// <param name="p3"></param>
-        private double CalculateLength(Point p1, Point p2)
+ 
+        //Вычисляет длину, которую надо отнимать от каждой вершины для скругления
+        private double GetLength()
         {
-            Point centr = _centr;
-            bool flag = false;
-
-            if (Math.Abs(p2.X - centr.X) < Math.Abs(p2.Y - centr.Y))
-            {
-                Interpolate(ref p2);
-                Interpolate(ref centr);
-                flag = true;
-            }
-
-            if (p2.X > centr.X)
-            {
-                Swap(ref p2, ref centr);
-            }
-
-            float aC = (float)(p2.Y - centr.Y) / (float)(p2.X - centr.X);
-            double yC = centr.Y;
-            double length;
-            //if (flag)
-            //{
-            //    Interpolate(ref centr);
-            //    Interpolate(ref p2);
-            //}
-
-            for (int x = p2.X; x <= centr.X; x++)
-            {
-                int yy = (int)Math.Round(yC, MidpointRounding.AwayFromZero);
-
-                //if (centr == _centr)
-                //    if (flag)
-                //        length = CalculateLengthFromMiddlePoint(yy, x, p2);
-                //    else
-                //        length = CalculateLengthFromMiddlePoint(x, yy, p2);
-                //else
-                //    if (flag)
-                //        length = CalculateLengthFromMiddlePoint(yy, x, centr);
-                //    else
-                //        length = CalculateLengthFromMiddlePoint(x, yy, centr);
-
-                if (centr == _centr)
-                    length = CalculateLengthFromMiddlePoint(x, yy, p2);
-                else
-                    length = CalculateLengthFromMiddlePoint(x, yy, centr);
-
-                if (length != -1)
-                    return length;
-                
-                yC += aC;
-            }
-
-            return -1;
-        }
-
-        /// <summary>
-        /// Находим точку, откуда пойдёт полуокружность и высчитывает расстояние, которое надо отступить по прямой
-        /// </summary>
-        private double CalculateLengthFromMiddlePoint(int x, int y, Point p)
-        {
-            double hip = Math.Sqrt(Math.Pow(x - p.X, 2) + Math.Pow(y - p.Y, 2));
-
-            if (Math.Abs(Math.Sin(_angle / 2) - _rCircle / hip) < Math.Pow(10, -1))
-                return Math.Sqrt(Math.Pow(hip, 2) - Math.Pow(_rCircle, 2));
-            else
-                return -1;
+            return _rCircle / Math.Tan(_angle / 2);
         }
 
         /// <summary>
@@ -154,6 +90,20 @@ namespace lab3
 
             double x = _centr.X + _rRec * Math.Cos(2 * Math.PI * i / _n);
             double y = _centr.Y + _rRec * Math.Sin(2 * Math.PI * i / _n);
+
+            p.X = (int)Math.Round(x, MidpointRounding.AwayFromZero);
+            p.Y = (int)Math.Round(y, MidpointRounding.AwayFromZero);
+
+            return p;
+        }
+
+        //высчитывает координаты центра дуги
+        private Point GetArcCenter(int i)
+        {
+            Point p = new Point();
+
+            double x = _centr.X + (_rRec - _rCircle / Math.Sin(_angle / 2)) * Math.Cos(2 * Math.PI * i / _n);
+            double y = _centr.Y + (_rRec - _rCircle / Math.Sin(_angle / 2)) * Math.Sin(2 * Math.PI * i / _n);
 
             p.X = (int)Math.Round(x, MidpointRounding.AwayFromZero);
             p.Y = (int)Math.Round(y, MidpointRounding.AwayFromZero);
@@ -177,15 +127,10 @@ namespace lab3
             }
 
             if (start.X > end.X)
-            {
                 Swap(ref start, ref end);
-            }
-
+            
             float a = (float)(end.Y - start.Y) / (float)(end.X - start.X);
             double y = start.Y;
-
-            GetNewPoint(a, ref start, end);
-            GetNewPoint(a, ref end, start);
 
             for (int x = start.X; x <= end.X; x++)
             {
@@ -200,21 +145,25 @@ namespace lab3
             }
         }
 
-        private void DrawArc(Point p1, Point p2)
-        {
-
-        }
-
         //Отнимает от вершины расстояние _length в сторону другой вершины
-        private void GetNewPoint(float a, ref Point p1, Point p2)
+        private void GetNewPoint(ref Point p1, Point p2)
         {
-            if (_length == -1)
+            if (_length == 0)
                 return;
 
+            bool flagI = false;
+            if (Math.Abs(p1.X - p2.X) < Math.Abs(p1.Y - p2.Y))
+            {
+                Interpolate(ref p1);
+                Interpolate(ref p2);
+                flagI = true;
+            }
+
+            float a = (float)(p2.Y - p1.Y) / (float)(p2.X - p1.X);
             double y = p1.Y;
 
-            if(p1.X < p2.X)
-                for(int x = p1.X; x <= p2.X; x++)
+            if (p1.X < p2.X)
+                for (int x = p1.X; x <= p2.X; x++)
                 {
                     int yy = (int)Math.Round(y, MidpointRounding.AwayFromZero);
 
@@ -222,7 +171,10 @@ namespace lab3
 
                     if ((int)Math.Round(vec, MidpointRounding.AwayFromZero) == _length)
                     {
-                        p1 = new Point(x, yy);
+                        if (flagI)
+                            p1 = new Point(yy, x);
+                        else
+                            p1 = new Point(x, yy);
                         return;
                     }
 
@@ -237,7 +189,10 @@ namespace lab3
 
                     if ((int)Math.Round(vec, MidpointRounding.AwayFromZero) == _length)
                     {
-                        p1 = new Point(x, yy);
+                        if (flagI)
+                            p1 = new Point(yy, x);
+                        else
+                            p1 = new Point(x, yy);
                         return;
                     }
 
@@ -245,6 +200,111 @@ namespace lab3
                 }
 
             throw new Exception("Ошибка при высчитывании новой точки");
+        }
+
+        //отрисовка дуги
+        private void DrawArc(Point pLeft, int i, Point pRight)
+        {
+            Point p1 = GetVertwex(i);
+            Point p2 = GetVertwex(i);
+
+            GetNewPoint(ref p1, pLeft);
+            GetNewPoint(ref pLeft, p1);
+            DrawLine(p1, pLeft);
+
+            GetNewPoint(ref p2, pRight);
+            GetNewPoint(ref pRight, p2);
+            DrawLine(p2, pRight);
+
+            Point centr = GetArcCenter(i);
+
+            if (p1.X > p2.X)
+                Swap(ref p1, ref p2);
+
+            if (p1.X < p2.X)
+            {
+                if (centr.Y <= p1.Y)
+                {
+                    if (centr.Y <= p2.Y)
+                        for (int x = p1.X; x <= p2.X; x++)
+                        {
+                            double y = Math.Sqrt(Math.Pow(_rCircle, 2) - Math.Pow(x - centr.X, 2)) + centr.Y;
+                            int yy = (int)Math.Round(y, MidpointRounding.AwayFromZero);
+
+                            _bitmap.SetPixel(x, yy, Color.Black);
+                        }
+                    else
+                    {
+                        for (int x = p1.X; x <= p2.X; x++)
+                        {
+                            double y = -Math.Sqrt(Math.Pow(_rCircle, 2) - Math.Pow(x - centr.X, 2)) + centr.Y;
+                            int yy = (int)Math.Round(y, MidpointRounding.AwayFromZero);
+
+                            _bitmap.SetPixel(x, yy, Color.Black);
+                        }
+                    }
+                }
+                else
+                {
+                    if (centr.Y <= p2.Y)
+                    {
+                        for (int x = p1.X; x >= centr.X - _rCircle; x--)
+                        {
+                            double y = -Math.Sqrt(Math.Pow(_rCircle, 2) - Math.Pow(x - centr.X, 2)) + centr.Y;
+                            int yy = (int)Math.Round(y, MidpointRounding.AwayFromZero);
+
+                            _bitmap.SetPixel(x, yy, Color.Black);
+                        }
+
+                        for(int x = p2.X; x >= centr.X - _rCircle; x--)
+                        {
+                            double y = Math.Sqrt(Math.Pow(_rCircle, 2) - Math.Pow(x - centr.X, 2)) + centr.Y;
+                            int yy = (int)Math.Round(y, MidpointRounding.AwayFromZero);
+
+                            _bitmap.SetPixel(x, yy, Color.Black);
+                        }
+                    }
+                    else
+                        for(int x = p1.X; x <= p2.X; x++)
+                        {
+                            double y = -Math.Sqrt(Math.Pow(_rCircle, 2) - Math.Pow(x - centr.X, 2)) + centr.Y;
+                            int yy = (int)Math.Round(y, MidpointRounding.AwayFromZero);
+
+                            _bitmap.SetPixel(x, yy, Color.Black);
+                        }
+                }
+            }
+            else if (p1.X == p2.X)
+            {
+                if (p1.X > centr.X)
+                    for (int x = p1.X; x <= centr.X + _rCircle; x++)
+                    {
+                        double y = -Math.Sqrt(Math.Pow(_rCircle, 2) - Math.Pow(x - centr.X, 2)) + centr.Y;
+                        int yy = (int)Math.Round(y, MidpointRounding.AwayFromZero);
+
+                        _bitmap.SetPixel(x, yy, Color.Black);
+
+                        y = Math.Sqrt(Math.Pow(_rCircle, 2) - Math.Pow(x - centr.X, 2)) + centr.Y;
+                        yy = (int)Math.Round(y, MidpointRounding.AwayFromZero);
+
+                        _bitmap.SetPixel(x, yy, Color.Black);
+                    }
+                else
+                    for (int x = p1.X; x >= centr.X - _rCircle; x--)
+                    {
+                        double y = -Math.Sqrt(Math.Pow(_rCircle, 2) - Math.Pow(x - centr.X, 2)) + centr.Y;
+                        int yy = (int)Math.Round(y, MidpointRounding.AwayFromZero);
+
+                        _bitmap.SetPixel(x, yy, Color.Black);
+
+                        y = Math.Sqrt(Math.Pow(_rCircle, 2) - Math.Pow(x - centr.X, 2)) + centr.Y;
+                        yy = (int)Math.Round(y, MidpointRounding.AwayFromZero);
+
+                        _bitmap.SetPixel(x, yy, Color.Black);
+                    }
+
+                return;
+            }
         }
 
         //Поменять начало и конец
