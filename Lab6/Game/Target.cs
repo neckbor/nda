@@ -13,8 +13,8 @@ namespace Game
         public int Distance { get; }
 
         private bool _side; //true = слева, false = справа
-
         private Path _path;
+        private int _a;
 
         private enum Path
         {
@@ -56,6 +56,10 @@ namespace Game
                 X = 0;
             else
                 X = 1400;
+
+            _a = rnd.Next(-12, 12);
+            while (_a == 0)
+                _a = rnd.Next(-12, 12);
         }
 
         public void Move()
@@ -84,13 +88,21 @@ namespace Game
         {
             if(_side)
                 for(; X < 1500; X += 2)
-                {
-                    Y += a;
-                }
+                    Y += _a;
+            else
+                for (; X > -50; X -= 2)
+                    Y += _a;
         }
 
         private void MoveToTop()
-        { }
+        {
+            if (_side)
+                for (; X < 1500; X += 2)
+                    Y = _a * X * X;
+            else
+                for (; X > -50; X -= 2)
+                    Y = _a * X * X;
+        }
 
         private void MoveToBottom()
         {
