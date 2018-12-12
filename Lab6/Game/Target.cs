@@ -12,6 +12,8 @@ namespace Game
         public int Y { get; set; }
         public int Distance { get; }
 
+        private bool _side; //true = слева, false = справа
+
         private Path _path;
 
         private enum Path
@@ -34,28 +36,68 @@ namespace Game
             {
                 case 0:
                     _path = Path.STRAIGHT;
-                    X = 0;
+                    _side = rnd.Next(0, 30) >= 15;
                     break;
                 case 1:
                     _path = Path.TO_TOP;
-                    X = 1400;
+                    _side = rnd.Next(0, 30) >= 15;
                     break;
                 case 2:
                     _path = Path.TO_BOTTOM;
-                    X = 0;
+                    _side = rnd.Next(0, 30) >= 15;
                     break;
                 case 3:
                     _path = Path.HILL;
-                    X = 1400;
+                    _side = rnd.Next(0, 30) >= 15;
                     break;
             }
-            
-            
+
+            if (_side)
+                X = 0;
+            else
+                X = 1400;
         }
 
         public void Move()
         {
+            switch(_path)
+            {
+                case Path.STRAIGHT:
+                    MoveStraight();
+                    break;
 
+                case Path.TO_TOP:
+                    MoveToTop();
+                    break;
+
+                case Path.TO_BOTTOM:
+                    MoveToBottom();
+                    break;
+
+                case Path.HILL:
+                    MoveHill();
+                    break;
+            }
         }
+
+        private void MoveStraight()
+        {
+            if(_side)
+                for(; X < 1500; X += 2)
+                {
+                    Y += a;
+                }
+        }
+
+        private void MoveToTop()
+        { }
+
+        private void MoveToBottom()
+        {
+    
+        }
+
+        private void MoveHill()
+        { }
     }
 }
