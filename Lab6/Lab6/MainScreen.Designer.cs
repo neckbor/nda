@@ -28,22 +28,44 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.gameField = new System.Windows.Forms.PictureBox();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.gameField)).BeginInit();
             this.SuspendLayout();
+            // 
+            // gameField
+            // 
+            this.gameField.Location = new System.Drawing.Point(0, 1);
+            this.gameField.Name = "gameField";
+            this.gameField.Size = new System.Drawing.Size(1386, 889);
+            this.gameField.TabIndex = 0;
+            this.gameField.TabStop = false;
+            // 
+            // timer
+            // 
+            this.timer.Interval = 1;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // MainScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1384, 891);
+            this.Controls.Add(this.gameField);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "MainScreen";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainScreen_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.gameField)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.PictureBox gameField;
+        private System.Windows.Forms.Timer timer;
     }
 }
 

@@ -86,9 +86,9 @@
     <None Include="Properties\plane1.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Game\Game.csproj">
+    <ProjectReference Include="..\Game\GameRes.csproj">
       <Project>{bc3e549f-b9b9-4458-9b62-6208c43f8e85}</Project>
-      <Name>Game</Name>
+      <Name>GameRes</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
