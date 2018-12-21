@@ -9,7 +9,7 @@ namespace GameRes
 {
     public class Drawing
     {
-        public static Graphics DrawPanel(Graphics g)
+        public static void DrawPanel(Graphics g)
         {
             //прицел
             Pen pen = new Pen(Color.Black, 4);
@@ -46,8 +46,9 @@ namespace GameRes
             g.DrawLine(Pens.GreenYellow, 635, 800, 785, 800);
             g.DrawLine(Pens.GreenYellow, 710, 725, 710, 875);
 
+            g.Dispose();
 
-            return g;
+            //return g;
         }
 
         public static Graphics DrawBackGround(Graphics g)

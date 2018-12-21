@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GameRes
 {
-    class Target
+    public class Target
     {
         public Image Model;
         public int X { get; set; }

@@ -17,7 +17,8 @@ namespace GameRes
 
         bool _stopThread = false;
 
-        public event Action FieldHasChanged;
+        public delegate void EventHandlerImage(Image img);
+        public event EventHandlerImage FieldHasChanged;
 
         public Game(Image target)
         {
@@ -45,7 +46,7 @@ namespace GameRes
             {
                 _plane.Move();
 
-                _rocket.Move();
+               _rocket.Move();
 
                 //hit = TestHitPlane(_plane, _rocket);
 
@@ -53,26 +54,27 @@ namespace GameRes
                     _plane = new Target(planeImg);
 
                 if (_rocket.Away || hit)
-                    _rocket = new Rocket();
+                   _rocket = new Rocket();
 
                 if(!_stopThread)
-                    FieldHasChanged();
+                    FieldHasChanged(_plane.Model);
 
-//                Thread.Sleep(2);
+                Thread.Sleep(2);
             }
 
         }
 
-        
-        public Graphics UpdateField(Graphics g)
+        public Target GetPlane()
         {
-                g.DrawImage(_plane.Model, _plane.X, _plane.Y);
+            return _plane;
+        }
 
-                g = Drawing.DrawPanel(g);
+        
+        public void UpdateField(Graphics g)
+        {
+            g.DrawImage(_plane.Model, _plane.X, _plane.Y);
 
-            g.Dispose();
-
-                return g;
+            Drawing.DrawPanel(g);
         }
 
         public void StopThread()
