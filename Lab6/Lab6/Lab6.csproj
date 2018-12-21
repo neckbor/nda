@@ -91,5 +91,11 @@
       <Name>GameRes</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rocket1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\rocket1.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

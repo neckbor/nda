@@ -29,8 +29,8 @@ namespace GameRes
 
             Random rnd = new Random();
 
-            _y0 = rnd.Next(0, 530);
-            _y1 = rnd.Next(0, 530);
+            _y0 = rnd.Next(0, 200);
+            _y1 = rnd.Next(0, 200);
 
             _side = rnd.Next(0, 2) == 1;
 
@@ -38,7 +38,7 @@ namespace GameRes
 
             if (_side)
             {
-                X = 0;
+                X = -550;
                 Model.RotateFlip(RotateFlipType.RotateNoneFlipX);
             }
             else
@@ -67,7 +67,7 @@ namespace GameRes
 
                 X--;
 
-                Away = (X <= -50);
+                Away = (X <= -550);
             }
         }
 

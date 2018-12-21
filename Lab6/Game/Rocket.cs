@@ -9,20 +9,28 @@ namespace GameRes
 {
     class Rocket
     {
-        //public Point Location { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
-        public int Distance { get; private set; }
+        public int Distance { get; set; }
         public bool Away { get; set; }
 
-        public Rocket()
+        public Image Model;
+
+        public Rocket(Image model)
         {
+            Model = model;
+
             Distance = 0;
+            X = 600;
+            Y = 700;
         }
 
         public void Move()
         {
             Distance++;
+            Y -= 3;
+
+            Away = (Y < -100 || X > 1500 || X < -500);
         }
 
     }

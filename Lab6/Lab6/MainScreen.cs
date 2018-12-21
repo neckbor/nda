@@ -38,7 +38,7 @@ namespace Lab6
             //gameField.Parent = this;
             //gameField.BackColor = Color.Transparent;
 
-            _game = new Game(Properties.Resources.plane1);
+            _game = new Game(Properties.Resources.plane1, Properties.Resources.rocket1);
 
             _game.FieldHasChanged += new Game.EventHandlerImage(OnFieldHasChanged);
         }
@@ -89,6 +89,21 @@ namespace Lab6
             _game.FieldHasChanged -= OnFieldHasChanged;
 
             _game.StopThread();
+        }
+
+        private void MainScreen_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Up)
+                _game.RocketUp();
+
+            if (e.KeyCode == Keys.Left)
+                _game.RocketLeft();
+
+            if (e.KeyCode == Keys.Right)
+                _game.RocketRight();
+
+            if (e.KeyCode == Keys.Down)
+                _game.RocketDown();
         }
     }
 }
