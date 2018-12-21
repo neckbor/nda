@@ -22,6 +22,7 @@ namespace GameRes
         private int _y0;
         private int _y1;
 
+        public bool Away { get; set; }
 
 
         public Target(Image model)
@@ -34,6 +35,8 @@ namespace GameRes
             _y1 = rnd.Next(0, 530);
 
             _side = rnd.Next(0, 2) == 1;
+
+            Away = false;
 
             if (_side)
             {
@@ -51,22 +54,45 @@ namespace GameRes
         {
             double yy = _y0;
             if (_side)
-                for (; X < 1500; X++)
-                {
-                    yy += _a;
-                    Y = (int)Math.Round(yy, MidpointRounding.AwayFromZero);
-                    Thread.Sleep(2);
-                }
-            else
-                for (; X > -50; X--)
-                {
-                    yy += _a;
-                    Y = (int)Math.Round(yy, MidpointRounding.AwayFromZero);
-                    Thread.Sleep(2);
-                }
+            {
+                yy += _a;
+                Y = (int)Math.Round(yy, MidpointRounding.AwayFromZero);
 
-            MoveComplited();
-          
+                X++;
+
+                Away = (X >= 1500);
+            }
+            else
+            {
+                yy += _a;
+                Y = (int)Math.Round(yy, MidpointRounding.AwayFromZero);
+
+                X--;
+
+                Away = (X <= -50);
+            }
         }
+
+        //public void Move()
+        //{
+        //    double yy = _y0;
+        //    if (_side)
+        //        for (; X < 1500; X++)
+        //        {
+        //            yy += _a;
+        //            Y = (int)Math.Round(yy, MidpointRounding.AwayFromZero);
+        //            Thread.Sleep(2);
+        //        }
+        //    else
+        //        for (; X > -50; X--)
+        //        {
+        //            yy += _a;
+        //            Y = (int)Math.Round(yy, MidpointRounding.AwayFromZero);
+        //            Thread.Sleep(2);
+        //        }
+
+        //    MoveComplited();
+
+        //}
     }
 }

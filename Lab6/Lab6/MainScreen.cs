@@ -49,5 +49,10 @@ namespace Lab6
 
             gameField.Image = bitmap;
         }
+
+        private void MainScreen_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _game.StopThread();
+        }
     }
 }
