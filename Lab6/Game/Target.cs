@@ -10,8 +10,6 @@ namespace GameRes
 {
     class Target
     {
-        public event Action MoveComplited;
-
         public Image Model;
         public int X { get; set; }
         public int Y { get; set; }
@@ -27,7 +25,7 @@ namespace GameRes
 
         public Target(Image model)
         {
-            Model = model;
+            Model = (Image)model.Clone();
 
             Random rnd = new Random();
 

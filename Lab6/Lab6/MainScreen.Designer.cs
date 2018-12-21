@@ -45,7 +45,6 @@
             // timer
             // 
             this.timer.Interval = 5;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // MainScreen
             // 
@@ -55,7 +54,7 @@
             this.Controls.Add(this.gameField);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "MainScreen";
-            this.Text = "Form1";
+            this.Text = "Air Defense Simulator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainScreen_FormClosing);
             this.Load += new System.EventHandler(this.MainScreen_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gameField)).EndInit();
