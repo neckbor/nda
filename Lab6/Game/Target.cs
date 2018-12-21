@@ -18,19 +18,10 @@ namespace GameRes
         public int Distance { get; }
 
         private bool _side; //true = слева, false = справа
-        private Path _path;
         private double _a;
         private int _y0;
         private int _y1;
 
-        private enum Path
-        {
-            STRAIGHT,
-            TO_TOP,
-            //TO_BOTTOM,
-            //HILL
-        };
-          
 
 
         public Target(Image model)
@@ -44,29 +35,6 @@ namespace GameRes
 
             _side = rnd.Next(0, 2) == 1;
 
-            ////int path = rnd.Next(0, 3);
-            //int path = rnd.Next(0, 2);
-            ////определяю по какой траектроии пойдёт цель и с какой стороны
-            //switch (path)
-            //{
-            //    case 0:
-            //        _path = Path.STRAIGHT;
-            //        _side = rnd.Next(0, 30) >= 15;
-            //        break;
-            //    case 1:
-            //        _path = Path.TO_TOP;
-            //        _side = rnd.Next(0, 30) >= 15;
-            //        break;
-            //    //case 2:
-            //    //    _path = Path.TO_BOTTOM;
-            //    //    _side = rnd.Next(0, 30) >= 15;
-            //    //    break;
-            //    //case 3:
-            //    //    _path = Path.HILL;
-            //    //    _side = rnd.Next(0, 30) >= 15;
-            //    //    break;
-            //}
-
             if (_side)
             {
                 X = 0;
@@ -77,88 +45,28 @@ namespace GameRes
 
             _a = (double)(_y1 - _y0) / 350;
 
-            //_a = rnd.Next(-5, 5);
-            //while (_a == 0)
-            //    _a = rnd.Next(5, 5);
         }
 
         public void Move()
         {
-            //switch(_path)
-            //{
-            //    case Path.STRAIGHT:
-            //        MoveStraight();
-            //        break;
-
-            //    case Path.TO_TOP:
-            //        MoveToTop();
-            //        break;
-
-            //    //case Path.TO_BOTTOM:
-            //    //    MoveToBottom();
-            //    //    break;
-
-            //    //case Path.HILL:
-            //    //    MoveHill();
-            //    //    break;
-            //}
             double yy = _y0;
-            if(_side)
+            if (_side)
                 for (; X < 1500; X++)
                 {
                     yy += _a;
                     Y = (int)Math.Round(yy, MidpointRounding.AwayFromZero);
-                    Thread.Sleep(15);
+                    Thread.Sleep(2);
                 }
             else
                 for (; X > -50; X--)
                 {
                     yy += _a;
                     Y = (int)Math.Round(yy, MidpointRounding.AwayFromZero);
-                    Thread.Sleep(15);
+                    Thread.Sleep(2);
                 }
 
             MoveComplited();
+          
         }
-
-        //private void MoveStraight()
-        //{
-        //    if (_side)
-        //        for (; X < 1500; X++)
-        //        {
-        //            Y += _a;
-        //            Thread.Sleep(10);
-        //        }
-        //    else
-        //        for (; X > -50; X--)
-        //        {
-        //            Y += _a;
-        //            Thread.Sleep(10);
-        //        }
-        //}
-
-        //private void MoveToTop()
-        //{
-        //    if (_side)
-        //        for (; X < 1500; X++)
-        //        {
-        //            Y = _a * X * X;
-        //            Thread.Sleep(10);
-        //        }
-        //    else
-        //        for (; X > -50; X--)
-        //        {
-        //            Y = _a * X * X;
-        //            Thread.Sleep(10);
-        //        }
-        //}
-
-        private void MoveToBottom()
-        {
-    
-        }
-
-        private void MoveHill()
-        { }
     }
 }

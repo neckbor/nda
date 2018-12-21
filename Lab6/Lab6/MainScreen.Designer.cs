@@ -44,7 +44,7 @@
             // 
             // timer
             // 
-            this.timer.Interval = 1;
+            this.timer.Interval = 5;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // MainScreen

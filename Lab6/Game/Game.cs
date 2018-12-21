@@ -12,10 +12,14 @@ namespace GameRes
     {
         Target _plane;
         Rocket _rocket;
+        Image planeImg;
+        Image rocketImg;
 
         public Game(Image target)
         {
-            _plane = new Target(target);
+            planeImg = target;
+
+            _plane = new Target(planeImg);
 
             _plane.MoveComplited += UpdatePlane;
         }
@@ -31,10 +35,17 @@ namespace GameRes
         {
             g.DrawImage(_plane.Model, _plane.X, _plane.Y);
 
+            g = Drawing.DrawPanel(g);
             return g;
         }
 
         public void UpdatePlane()
-        { }
+        {
+            
+            _plane = new Target(planeImg);
+
+            _plane.MoveComplited += UpdatePlane;
+            Start();
+        }
     }
 }
