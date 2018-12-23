@@ -12,19 +12,25 @@ namespace GameRes
     {
         Target _plane;
         Rocket _rocket;
-        Image planeImg;
-        Image rocketImg;
+        Image _planeImg;
+        Image _rocketImg;
+        Image _explosion;
 
         bool _stopThread = false;
+        bool _isExplosion = false;
+
+        Font _font;
 
         public delegate void EventHandlerImage(Image img);
         public event EventHandlerImage FieldHasChanged;
 
-        public Game(Image target, Image rocket)
+        public Game(Image target, Image rocket, Image explosion)
         {
-            planeImg = target;
-            rocketImg = rocket;
+            _planeImg = target;
+            _rocketImg = rocket;
+            _explosion = explosion;
 
+            _font = new Font(FontFamily.GenericSerif, 10);
         }
 
         public void Start()
@@ -34,49 +40,86 @@ namespace GameRes
             threadPlane.Start();
         }
 
-        //object locker = new object();
-
         private void ThreadDraw()
         {
-            _plane = new Target(planeImg);
-            _rocket = new Rocket(rocketImg);
+            _plane = new Target(_planeImg);
+            _rocket = new Rocket(_rocketImg);
 
             bool hit = false;
 
+            int c = 1;
             while (!_stopThread)
             {
                 _plane.Move();
 
-               _rocket.Move();
+                if (c % 5 == 0 && _rocket.IsStarted)
+                    _rocket.Move();
 
-                //hit = TestHitPlane(_plane, _rocket);
+                hit = TestHitPlane(_plane, _rocket);
 
-                if (_plane.Away || hit)
-                    _plane = new Target(planeImg);
+                if(hit)
+                {
+                    _isExplosion = true;
+                }
 
-                if (_rocket.Away || hit)
-                   _rocket = new Rocket(rocketImg);
+                if (_plane.Away)
+                    _plane = new Target(_planeImg);
 
-                if(!_stopThread)
+                if (_rocket.Away)
+                    _rocket = new Rocket(_rocketImg);
+
+                if (!_stopThread)
+                {
+                    if (_isExplosion)
+                    {
+                        FieldHasChanged(_plane.Model);
+                        Thread.Sleep(2000);
+                        _isExplosion = false;
+                        _plane = new Target(_planeImg);
+                        _rocket = new Rocket(_rocketImg);
+                    }
+
                     FieldHasChanged(_plane.Model);
+                }
 
-                Thread.Sleep(20);
+                c++;
+                Thread.Sleep(3);
             }
 
         }
 
-        public Target GetPlane()
+        private bool TestHitPlane(Target plane, Rocket rocket)
         {
-            return _plane;
+            return plane.X + 240 >= rocket.X && plane.X <= rocket.X && plane.Y + 200 >= rocket.Y && plane.Y <= rocket.Y && plane.Distance == rocket.Distance;
         }
 
         
         public void UpdateField(Graphics g)
         {
-            g.DrawImage(_plane.Model, _plane.X, _plane.Y);
-            g.DrawImage(_rocket.Model, _rocket.X, _rocket.Y);
+            if(_plane.Distance >= _rocket.Distance)
+            {
+                g.DrawImage(_plane.Model, _plane.X, _plane.Y);
+                g.DrawImage(_rocket.Model, _rocket.X, _rocket.Y);
+            }
+            else
+            {
+                g.DrawImage(_rocket.Model, _rocket.X, _rocket.Y);
+                g.DrawImage(_plane.Model, _plane.X, _plane.Y);
+            }
+            
 
-            Drawing.DrawPanel(g);
+            string dist = "";
+            if (_rocket != null && _plane != null)
+            {
+                dist = (_plane.Distance - _rocket.Distance).ToString();
+            }
+
+            if(_isExplosion)
+            {
+                g.DrawImage(_explosion, _plane.X - 10, _plane.Y - 10);
+            }
+
+            Drawing.DrawPanel(g, dist);
         }
 
         public void StopThread()
@@ -84,30 +127,38 @@ namespace GameRes
             _stopThread = true;
         }
 
-        public void RocketUp()
+        public void StartRocket()
         {
             if (_rocket == null)
+                return;
+
+            _rocket.Start();
+        }
+
+        public void RocketUp()
+        {
+            if (_rocket == null || !_rocket.IsStarted)
                 return;
             _rocket.Y -= 3;
         }
 
         public void RocketDown()
         {
-            if (_rocket == null)
+            if (_rocket == null || !_rocket.IsStarted)
                 return;
             _rocket.Y += 3;
         }
 
         public void RocketLeft()
         {
-            if (_rocket == null)
+            if (_rocket == null || !_rocket.IsStarted)
                 return;
             _rocket.X -= 3;
         }
 
         public void RocketRight()
         {
-            if (_rocket == null)
+            if (_rocket == null || !_rocket.IsStarted)
                 return;
             _rocket.X += 3;
         }

@@ -34,9 +34,9 @@
             // 
             // gameField
             // 
-            this.gameField.Location = new System.Drawing.Point(0, 1);
+            this.gameField.Location = new System.Drawing.Point(-2, 0);
             this.gameField.Name = "gameField";
-            this.gameField.Size = new System.Drawing.Size(1386, 889);
+            this.gameField.Size = new System.Drawing.Size(1389, 892);
             this.gameField.TabIndex = 0;
             this.gameField.TabStop = false;
             // 

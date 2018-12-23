@@ -18,9 +18,6 @@ namespace Lab6
 
         Bitmap exBitmap = null;
 
-        //public delegate void EventHandlerGraphics();
-        //public event void 
-
         Game _game;
 
 
@@ -31,14 +28,8 @@ namespace Lab6
             bitmap = new Bitmap(this.Width, this.Height);
 
             g = Graphics.FromImage(bitmap);
-            //g = Drawing.DrawBackGround(g);
 
-            //this.BackgroundImage = bitmap;
-
-            //gameField.Parent = this;
-            //gameField.BackColor = Color.Transparent;
-
-            _game = new Game(Properties.Resources.plane1, Properties.Resources.rocket1);
+            _game = new Game(Properties.Resources.plane1, Properties.Resources.rocket2, Properties.Resources.Explosion);
 
             _game.FieldHasChanged += new Game.EventHandlerImage(OnFieldHasChanged);
         }
@@ -81,6 +72,8 @@ namespace Lab6
 
         private void MainScreen_Load(object sender, EventArgs e)
         {
+            MessageBox.Show("Добро пожаловать в AirDefense Simulator!\nПробел -> запустить ракету\n^ -> двигать ракету вверх\nv -> двигать ракету вниз\n" +
+                "> -> двигать ракету вправо\n< -> двигать ракету влево\nEnjoy!");
             _game.Start();
         }
 
@@ -93,6 +86,9 @@ namespace Lab6
 
         private void MainScreen_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Space)
+                _game.StartRocket();
+
             if (e.KeyCode == Keys.Up)
                 _game.RocketUp();
 

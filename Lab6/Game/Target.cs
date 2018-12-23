@@ -29,6 +29,12 @@ namespace GameRes
 
             Random rnd = new Random();
 
+            Distance = rnd.Next(70, 100);
+
+
+            Size size = new Size(Model.Width - Distance * 4, Model.Height - Distance * 4);
+            Model = Drawing.ResizeImg(Model, size);
+
             _y0 = rnd.Next(0, 200);
             _y1 = rnd.Next(0, 200);
 
@@ -70,27 +76,5 @@ namespace GameRes
                 Away = (X <= -550);
             }
         }
-
-        //public void Move()
-        //{
-        //    double yy = _y0;
-        //    if (_side)
-        //        for (; X < 1500; X++)
-        //        {
-        //            yy += _a;
-        //            Y = (int)Math.Round(yy, MidpointRounding.AwayFromZero);
-        //            Thread.Sleep(2);
-        //        }
-        //    else
-        //        for (; X > -50; X--)
-        //        {
-        //            yy += _a;
-        //            Y = (int)Math.Round(yy, MidpointRounding.AwayFromZero);
-        //            Thread.Sleep(2);
-        //        }
-
-        //    MoveComplited();
-
-        //}
     }
 }

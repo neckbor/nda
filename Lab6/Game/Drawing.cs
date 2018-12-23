@@ -9,7 +9,7 @@ namespace GameRes
 {
     public class Drawing
     {
-        public static void DrawPanel(Graphics g)
+        public static void DrawPanel(Graphics g, string dist)
         {
             //прицел
             Pen pen = new Pen(Color.Black, 4);
@@ -27,10 +27,10 @@ namespace GameRes
             g.FillClosedCurve(Brushes.DarkSlateGray, panel);
 
             //наполнение приборки
-            g.FillRectangle(Brushes.Black, 350, 800, 170, 50);
-            g.FillRectangle(Brushes.Red, 355, 805, 48, 40);
-            g.FillRectangle(Brushes.Green, 410, 805, 48, 40);
-            g.FillRectangle(Brushes.Yellow, 466, 805, 48, 40);
+            g.FillRectangle(Brushes.Black, 350, 770, 170, 50);
+            g.FillRectangle(Brushes.Red, 355, 775, 48, 40);
+            g.FillRectangle(Brushes.Green, 410, 775, 48, 40);
+            g.FillRectangle(Brushes.Yellow, 466, 775, 48, 40);
 
             g.FillRectangle(Brushes.Black, 860, 855, 100, 25);
             g.FillRectangle(Brushes.Black, 898, 755, 25, 100);
@@ -46,9 +46,12 @@ namespace GameRes
             g.DrawLine(Pens.GreenYellow, 635, 800, 785, 800);
             g.DrawLine(Pens.GreenYellow, 710, 725, 710, 875);
 
-            g.Dispose();
+            g.FillRectangle(Brushes.Black, 305, 830, 250, 34);
 
-            //return g;
+            Font font = new Font(FontFamily.GenericMonospace, 13);
+            g.DrawString("Расстояние до цели: " + dist, font, Brushes.White, 305, 837);
+
+            g.Dispose();
         }
 
         public static Graphics DrawBackGround(Graphics g)
@@ -96,6 +99,11 @@ namespace GameRes
 
             g.Dispose();
             return g;
+        }
+
+        public static Image ResizeImg(Image img, Size size)
+        {
+            return (Image)(new Bitmap(img, size));
         }
     }
 }
