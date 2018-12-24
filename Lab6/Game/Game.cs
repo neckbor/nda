@@ -52,7 +52,7 @@ namespace GameRes
             {
                 _plane.Move();
 
-                if (c % 5 == 0 && _rocket.IsStarted)
+                if (c % 6 == 0 && _rocket.IsStarted)
                     _rocket.Move();
 
                 hit = TestHitPlane(_plane, _rocket);
